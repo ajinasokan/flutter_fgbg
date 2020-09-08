@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'dart:async';
-
-import 'package:flutter/services.dart';
 import 'package:flutter_fgbg/flutter_fgbg.dart';
+import 'package:local_auth/local_auth.dart';
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
 
 void main() {
   runApp(MyApp());
@@ -13,44 +13,92 @@ class MyApp extends StatefulWidget {
   _MyAppState createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
-  String _platformVersion = 'Unknown';
+class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
+  final picker = ImagePicker();
 
-//  @override
-//  void initState() {
-//    super.initState();
-//    initPlatformState();
-//  }
-//
-//  // Platform messages are asynchronous, so we initialize in an async method.
-//  Future<void> initPlatformState() async {
-//    String platformVersion;
-//    // Platform messages may fail, so we use a try/catch PlatformException.
-//    try {
-//      platformVersion = await FlutterFgbg.platformVersion;
-//    } on PlatformException {
-//      platformVersion = 'Failed to get platform version.';
-//    }
-//
-//    // If the widget was removed from the tree while the asynchronous platform
-//    // message was in flight, we want to discard the reply rather than calling
-//    // setState to update our non-existent appearance.
-//    if (!mounted) return;
-//
-//    setState(() {
-//      _platformVersion = platformVersion;
-//    });
-//  }
+  List<String> events = [];
+
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    events.add(state.toString());
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Plugin example app'),
-        ),
-        body: Center(
-          child: Text('Running on: $_platformVersion\n'),
+    return FGBGNotifier(
+      onEvent: (event) {
+        events.add(event.toString());
+        setState(() {});
+      },
+      child: MaterialApp(
+        home: Scaffold(
+          body: SafeArea(
+            child: Column(
+              children: <Widget>[
+                Row(
+                  children: <Widget>[
+                    RaisedButton(
+                      onPressed: () {
+                        events.clear();
+                        setState(() {});
+                      },
+                      child: Text("Clear"),
+                    ),
+                    RaisedButton(
+                      onPressed: () async {
+                        events.add("// Opening camera");
+                        setState(() {});
+                        await picker.getImage(source: ImageSource.camera);
+                      },
+                      child: Text("Take Image"),
+                    ),
+                    RaisedButton(
+                      onPressed: () async {
+                        events.add("// Opening gallery");
+                        setState(() {});
+                        await picker.getImage(source: ImageSource.gallery);
+                      },
+                      child: Text("Pick Image"),
+                    ),
+                    RaisedButton(
+                      onPressed: () async {
+                        events.add("// Prompting biometric");
+                        setState(() {});
+                        var auth = LocalAuthentication();
+
+                        List<BiometricType> availableBiometrics =
+                            await auth.getAvailableBiometrics();
+
+                        if (Platform.isIOS) {
+                          if (availableBiometrics
+                              .contains(BiometricType.face)) {
+                            await auth.authenticateWithBiometrics(
+                                localizedReason: 'Test');
+                          } else if (availableBiometrics
+                              .contains(BiometricType.fingerprint)) {
+                            await auth.authenticateWithBiometrics(
+                                localizedReason: 'Test');
+                          }
+                        }
+                      },
+                      child: Text("FaceID"),
+                    ),
+                  ],
+                ),
+                Expanded(
+                  child: ListView(
+                    children: [for (var e in events) Text(e)],
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );
