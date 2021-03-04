@@ -21,8 +21,8 @@ class FGBGNotifier extends StatefulWidget {
   final ValueChanged<FGBGType> onEvent;
 
   FGBGNotifier({
-    this.child,
-    this.onEvent,
+    required this.child,
+    required this.onEvent,
   });
 
   @override
@@ -30,13 +30,13 @@ class FGBGNotifier extends StatefulWidget {
 }
 
 class _FGBGNotifierState extends State<FGBGNotifier> {
-  StreamSubscription subscription;
+  StreamSubscription? subscription;
 
   @override
   void initState() {
     super.initState();
     subscription = FGBGEvents.stream.listen((event) {
-      widget.onEvent?.call(event);
+      widget.onEvent.call(event);
     });
   }
 
