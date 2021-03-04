@@ -20,6 +20,14 @@ dependencies:
   flutter_fgbg: ^0.0.1
 ```
 
+For null safe version:
+
+```yaml
+dependencies:
+  ...
+  flutter_fgbg: ^0.1.0
+```
+
 Use the built in Widget:
 
 ```dart
