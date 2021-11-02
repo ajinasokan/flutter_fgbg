@@ -9,7 +9,6 @@ enum FGBGType {
 
   willEnterForeground,
 
-  willStart,
   willTerminate,
 
   willSwitchContext,
@@ -17,16 +16,16 @@ enum FGBGType {
 
 Map<String, FGBGType> messageToFGBGMapping = {
   // iOS Mappings
-  "didBecomeActive": FGBGType.willStart,
+  "didBecomeActive": FGBGType.enteredForeground,
   "didEnterBackground": FGBGType.enteredBackground,
   "willEnterForeground": FGBGType.willEnterForeground,
   "willResignActive": FGBGType.willSwitchContext,
   "willTerminate": FGBGType.willTerminate,
 
   // Android Mappings
-  "ON_CREATE": FGBGType.willStart,
+  "ON_RESUME": FGBGType.enteredForeground,
   "ON_STOP": FGBGType.enteredBackground,
-  "ON_RESUME": FGBGType.willEnterForeground,
+  "ON_CREATE": FGBGType.willEnterForeground,
   "ON_PAUSE": FGBGType.willSwitchContext,
   "ON_DESTROY": FGBGType.willTerminate,
 };
