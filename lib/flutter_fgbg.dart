@@ -34,7 +34,7 @@ Map<String, FGBGType> messageToFGBGMapping = {
 class FGBGEvents {
   static const _channel = EventChannel("com.ajinasokan.flutter_fgbg/events");
 
-  static Stream<FGBGType> get stream => _channel.receiveBroadcastStream().map((event) => messageToFGBGMapping[event]);
+  static Stream<FGBGType> get stream => _channel.receiveBroadcastStream().map((event) => messageToFGBGMapping[event]!);
 }
 
 class FGBGNotifier extends StatefulWidget {
