@@ -14,14 +14,32 @@ public class SwiftFlutterFGBGPlugin: NSObject, FlutterPlugin, FlutterStreamHandl
 
     let notificationCenter = NotificationCenter.default
     notificationCenter.addObserver(instance,
-                                   selector: #selector(didEnterBackground),
-                                   name: UIApplication.didEnterBackgroundNotification,
+                                   selector: #selector(didBecomeActive),
+                                   name: UIApplication.didBecomeActiveNotification,
                                    object: nil)
     
     notificationCenter.addObserver(instance,
-                                   selector: #selector(willEnterForeground),
-                                   name: UIApplication.willEnterForegroundNotification,
+                                   selector: #selector(didEnterBackground),
+                                   name: UIApplication.didEnterBackgroundNotification,
                                    object: nil)
+
+     notificationCenter.addObserver(instance,
+                                    selector: #selector(willEnterForeground),
+                                    name: UIApplication.willEnterForegroundNotification,
+                                    object: nil)
+    
+    notificationCenter.addObserver(instance,
+                                   selector: #selector(willResignActive),
+                                   name: UIApplication.willResignActiveNotification,
+                                   object: nil)
+    
+
+    notificationCenter.addObserver(instance,
+                                    selector: #selector(willTerminate),
+                                    name: UIApplication.willTerminateNotification,
+                                    object: nil)
+
+
   }
     
     public func onListen(withArguments arguments: Any?,
@@ -35,11 +53,24 @@ public class SwiftFlutterFGBGPlugin: NSObject, FlutterPlugin, FlutterStreamHandl
         return nil
     }
     
+    @objc func didBecomeActive() {
+        self.eventSink?("didBecomeActive")
+    }
+
     @objc func didEnterBackground() {
-        self.eventSink?("background")
+        self.eventSink?("didEnterBackground")
     }
 
     @objc func willEnterForeground() {
-        self.eventSink?("foreground")
+        self.eventSink?("willEnterForeground")
     }
+
+    @objc func willResignActive() {
+        self.eventSink?("willResignActive")
+    }
+
+    @objc func willTerminate() {
+        self.eventSink?("willTerminate")
+    }
+
 }

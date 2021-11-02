@@ -4,16 +4,37 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
 enum FGBGType {
-  foreground,
-  background,
+  enteredForeground,
+  enteredBackground,
+
+  willEnterForeground,
+
+  willStart,
+  willTerminate,
+
+  willSwitchContext,
 }
+
+Map<String, FGBGType> messageToFGBGMapping = {
+  // iOS Mappings
+  "didBecomeActive": FGBGType.willStart,
+  "didEnterBackground": FGBGType.enteredBackground,
+  "willEnterForeground": FGBGType.willEnterForeground,
+  "willResignActive": FGBGType.willSwitchContext,
+  "willTerminate": FGBGType.willTerminate,
+
+  // Android Mappings
+  "ON_CREATE": FGBGType.willStart,
+  "ON_STOP": FGBGType.enteredBackground,
+  "ON_RESUME": FGBGType.willEnterForeground,
+  "ON_PAUSE": FGBGType.willSwitchContext,
+  "ON_DESTROY": FGBGType.willTerminate,
+};
 
 class FGBGEvents {
   static const _channel = EventChannel("com.ajinasokan.flutter_fgbg/events");
 
-  static Stream<FGBGType> get stream =>
-      _channel.receiveBroadcastStream().map((event) =>
-          event == "foreground" ? FGBGType.foreground : FGBGType.background);
+  static Stream<FGBGType> get stream => _channel.receiveBroadcastStream().map((event) => messageToFGBGMapping[event]);
 }
 
 class FGBGNotifier extends StatefulWidget {
