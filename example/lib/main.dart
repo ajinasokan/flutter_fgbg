@@ -72,20 +72,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
                         setState(() {});
                         var auth = LocalAuthentication();
 
-                        List<BiometricType> availableBiometrics =
-                            await auth.getAvailableBiometrics();
-
-                        if (Platform.isIOS) {
-                          if (availableBiometrics
-                              .contains(BiometricType.face)) {
-                            await auth.authenticateWithBiometrics(
-                                localizedReason: 'Test');
-                          } else if (availableBiometrics
-                              .contains(BiometricType.fingerprint)) {
-                            await auth.authenticateWithBiometrics(
-                                localizedReason: 'Test');
-                          }
-                        }
+                        await auth.authenticate(
+                            biometricOnly: true, localizedReason: 'Test');
                       },
                       child: Text("FaceID"),
                     ),
