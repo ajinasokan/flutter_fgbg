@@ -4,7 +4,7 @@ Flutter plugin to detect when app(not Flutter container) goes to background or f
 
 ## Why
 
-Flutter has [WidgetsBindingObserver](https://api.flutter.dev/flutter/widgets/WidgetsBindingObserver-class.html) to get notified when app changes its state from active to inactive states and back. But it actually includes the state changes of the embedding Activity/ViewController as well. So if you have a plugin that opens a new activity/view controller(eg: image picker) or in iOS if you start a FaceID prompt then WidgetsBindingObserver will report as the app is inactive/resumed.
+Flutter has [WidgetsBindingObserver](https://api.flutter.dev/flutter/widgets/WidgetsBindingObserver-class.html) to get notified when app changes its state from active to inactive states and back. But it actually includes the state changes of the embedding Activity/ViewController as well. So if you have a plugin that opens a new activity/view controller or in iOS if you start a FaceID prompt then WidgetsBindingObserver will report as the app is inactive/resumed.
 
 This plugin on the other hand reports the events only at app level. Since most apps need only background/foreground events this plugin is implemented with just those events. In iOS, plugin reports `didEnterBackgroundNotification` and `willEnterForegroundNotification` notifications and in Android, plugin reports these using `androidx.lifecycle:lifecycle-process` package.
 

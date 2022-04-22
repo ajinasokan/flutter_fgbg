@@ -1,4 +1,4 @@
-package com.ajinasokan.flutter_fgbg_example;
+package com.ajinasokan.example;
 
 import io.flutter.embedding.android.FlutterActivity;
 

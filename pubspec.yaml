@@ -1,11 +1,11 @@
 name: flutter_fgbg
 description: Flutter plugin to detect when app(not Flutter container) goes to background or foreground
-version: 0.1.0
+version: 0.2.0
 homepage: https://github.com/ajinasokan/flutter_fgbg
 
 environment:
-  sdk: '>=2.12.0 <3.0.0'
-  flutter: ">=1.10.0"
+  sdk: ">=2.12.0 <3.0.0"
+  flutter: ">=1.12.13+hotfix.6"
 
 dependencies:
   flutter:
