@@ -6,12 +6,10 @@ import 'package:flutter/widgets.dart';
 enum FGBGType {
   enteredForeground,
   enteredBackground,
-
   willEnterForeground,
-
   willTerminate,
-
   willSwitchContext,
+  unknown,
 }
 
 Map<String, FGBGType> messageToFGBGMapping = {
@@ -33,7 +31,8 @@ Map<String, FGBGType> messageToFGBGMapping = {
 class FGBGEvents {
   static const _channel = EventChannel("com.ajinasokan.flutter_fgbg/events");
 
-  static Stream<FGBGType> get stream => _channel.receiveBroadcastStream().map((event) => messageToFGBGMapping[event]!);
+  static Stream<FGBGType> get stream =>
+      _channel.receiveBroadcastStream().map((event) => messageToFGBGMapping[event] ?? FGBGType.unknown);
 }
 
 class FGBGNotifier extends StatefulWidget {
