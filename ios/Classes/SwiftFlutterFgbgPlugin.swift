@@ -12,6 +12,8 @@ public class SwiftFlutterFGBGPlugin: NSObject, FlutterPlugin, FlutterStreamHandl
     let lifecycleEventChannel = FlutterEventChannel(name: lifeCycleChannel, binaryMessenger: registrar.messenger())
     lifecycleEventChannel.setStreamHandler(instance as FlutterStreamHandler & NSObjectProtocol)
 
+
+
     let notificationCenter = NotificationCenter.default
     notificationCenter.addObserver(instance,
                                    selector: #selector(didBecomeActive),
@@ -52,25 +54,33 @@ public class SwiftFlutterFGBGPlugin: NSObject, FlutterPlugin, FlutterStreamHandl
         eventSink = nil
         return nil
     }
+
+    public func addToEventSink(event: String) {
+        do {
+            try self.eventSink?(event)
+        } catch {
+            print("Flutter Engine was probably not ready yet. Message will not be sent.")
+        }
+    }
     
     @objc func didBecomeActive() {
-        self.eventSink?("didBecomeActive")
+        addToEventSink(event: "didBecomeActive")
     }
 
     @objc func didEnterBackground() {
-        self.eventSink?("didEnterBackground")
+        addToEventSink(event: "didEnterBackground")
     }
 
     @objc func willEnterForeground() {
-        self.eventSink?("willEnterForeground")
+        addToEventSink(event: "willEnterForeground")
     }
 
     @objc func willResignActive() {
-        self.eventSink?("willResignActive")
+        addToEventSink(event: "willResignActive")
     }
 
     @objc func willTerminate() {
-        self.eventSink?("willTerminate")
+        addToEventSink(event: "willTerminate")
     }
 
 }
