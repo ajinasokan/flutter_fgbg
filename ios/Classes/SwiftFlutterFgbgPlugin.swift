@@ -12,16 +12,36 @@ public class SwiftFlutterFGBGPlugin: NSObject, FlutterPlugin, FlutterStreamHandl
     let lifecycleEventChannel = FlutterEventChannel(name: lifeCycleChannel, binaryMessenger: registrar.messenger())
     lifecycleEventChannel.setStreamHandler(instance as FlutterStreamHandler & NSObjectProtocol)
 
+
+
     let notificationCenter = NotificationCenter.default
+    notificationCenter.addObserver(instance,
+                                   selector: #selector(didBecomeActive),
+                                   name: UIApplication.didBecomeActiveNotification,
+                                   object: nil)
+    
     notificationCenter.addObserver(instance,
                                    selector: #selector(didEnterBackground),
                                    name: UIApplication.didEnterBackgroundNotification,
                                    object: nil)
+
+     notificationCenter.addObserver(instance,
+                                    selector: #selector(willEnterForeground),
+                                    name: UIApplication.willEnterForegroundNotification,
+                                    object: nil)
     
     notificationCenter.addObserver(instance,
-                                   selector: #selector(willEnterForeground),
-                                   name: UIApplication.willEnterForegroundNotification,
+                                   selector: #selector(willResignActive),
+                                   name: UIApplication.willResignActiveNotification,
                                    object: nil)
+    
+
+    notificationCenter.addObserver(instance,
+                                    selector: #selector(willTerminate),
+                                    name: UIApplication.willTerminateNotification,
+                                    object: nil)
+
+
   }
     
     public func onListen(withArguments arguments: Any?,
@@ -34,12 +54,33 @@ public class SwiftFlutterFGBGPlugin: NSObject, FlutterPlugin, FlutterStreamHandl
         eventSink = nil
         return nil
     }
+
+    public func addToEventSink(event: String) {
+        do {
+            try self.eventSink?(event)
+        } catch {
+            print("Flutter Engine was probably not ready yet. Message will not be sent.")
+        }
+    }
     
+    @objc func didBecomeActive() {
+        addToEventSink(event: "didBecomeActive")
+    }
+
     @objc func didEnterBackground() {
-        self.eventSink?("background")
+        addToEventSink(event: "didEnterBackground")
     }
 
     @objc func willEnterForeground() {
-        self.eventSink?("foreground")
+        addToEventSink(event: "willEnterForeground")
     }
+
+    @objc func willResignActive() {
+        addToEventSink(event: "willResignActive")
+    }
+
+    @objc func willTerminate() {
+        addToEventSink(event: "willTerminate")
+    }
+
 }

@@ -40,19 +40,48 @@ public class FlutterFGBGPlugin implements FlutterPlugin, ActivityAware, Lifecycl
     ProcessLifecycleOwner.get().getLifecycle().addObserver(this);
   }
 
-  @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
-  void onAppBackgrounded() {
-    if (lifecycleSink != null) {
-      lifecycleSink.success("background");
-    }
+  @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
+  void onAppCreated() {
+      if (lifecycleSink != null) {
+      lifecycleSink.success("ON_CREATE");
+      }
   }
 
   @OnLifecycleEvent(Lifecycle.Event.ON_START)
-  void onAppForegrounded() {
+  void onAppStarted() {
     if (lifecycleSink != null) {
-      lifecycleSink.success("foreground");
+      lifecycleSink.success("ON_START");
     }
   }
+
+  @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
+  void onAppResumed() {
+    if (lifecycleSink != null) {
+      lifecycleSink.success("ON_RESUME");
+    }
+  }
+
+  @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
+  void onAppPaused() {
+    if (lifecycleSink != null) {
+      lifecycleSink.success("ON_PAUSE");
+    }
+  }
+
+  @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
+  void onAppStopped() {
+    if (lifecycleSink != null) {
+      lifecycleSink.success("ON_STOP");
+    }
+  }
+
+  @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
+  void onAppDestroy() {
+    if (lifecycleSink != null) {
+      lifecycleSink.success("ON_DESTROY");
+    }
+  }
+  
 
   @Override
   public void onDetachedFromActivityForConfigChanges() {}
