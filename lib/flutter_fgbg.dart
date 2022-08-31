@@ -10,10 +10,12 @@ enum FGBGType {
 
 class FGBGEvents {
   static const _channel = EventChannel("com.ajinasokan.flutter_fgbg/events");
+  static Stream<FGBGType>? _stream;
 
-  static Stream<FGBGType> get stream =>
-      _channel.receiveBroadcastStream().map((event) =>
+  static Stream<FGBGType> get stream {
+      return _stream ??= _channel.receiveBroadcastStream().map((event) =>
           event == "foreground" ? FGBGType.foreground : FGBGType.background);
+  }
 }
 
 class FGBGNotifier extends StatefulWidget {
