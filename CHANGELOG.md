@@ -1,3 +1,7 @@
+## 0.2.1
+
+* Fix use of FGBGNotifier and event stream in multiple places
+
 ## 0.2.0
 
 * Removed deprecated `registerWith` function to cleanup warnings
