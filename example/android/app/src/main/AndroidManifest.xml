@@ -1,5 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.ajinasokan.example">
+
+    <uses-permission android:name="android.permission.USE_FINGERPRINT"/>
+    
    <application
         android:label="example"
         android:name="${applicationName}"

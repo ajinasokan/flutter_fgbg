@@ -11,7 +11,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  local_auth: 1.1.8
+  local_auth: ^2.1.0
   image_picker: 0.8.4+10
   flutter_fgbg:
     # When depending on this package from a real application you should use:

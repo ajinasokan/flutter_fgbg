@@ -43,14 +43,14 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
               children: <Widget>[
                 Row(
                   children: <Widget>[
-                    RaisedButton(
+                    ElevatedButton(
                       onPressed: () {
                         events.clear();
                         setState(() {});
                       },
                       child: Text("Clear"),
                     ),
-                    RaisedButton(
+                    ElevatedButton(
                       onPressed: () async {
                         events.add("// Opening camera");
                         setState(() {});
@@ -58,7 +58,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
                       },
                       child: Text("Take Image"),
                     ),
-                    RaisedButton(
+                    ElevatedButton(
                       onPressed: () async {
                         events.add("// Opening gallery");
                         setState(() {});
@@ -66,14 +66,19 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
                       },
                       child: Text("Pick Image"),
                     ),
-                    RaisedButton(
+                    ElevatedButton(
                       onPressed: () async {
                         events.add("// Prompting biometric");
                         setState(() {});
                         var auth = LocalAuthentication();
 
                         await auth.authenticate(
-                            biometricOnly: true, localizedReason: 'Test');
+                          // biometricOnly: true,
+                          options: AuthenticationOptions(
+                            biometricOnly: true,
+                          ),
+                          localizedReason: 'Test',
+                        );
                       },
                       child: Text("FaceID"),
                     ),
