@@ -14,18 +14,8 @@ Checkout `example/` project to see the differences in action.
 
 Add to your pubpsec:
 
-```yaml
-dependencies:
-  ...
-  flutter_fgbg: ^0.0.1
-```
-
-For null safe version:
-
-```yaml
-dependencies:
-  ...
-  flutter_fgbg: ^0.1.0
+```shell
+flutter pub add flutter_fgbg
 ```
 
 Use the built in Widget:
