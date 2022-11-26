@@ -1,3 +1,7 @@
+## 0.2.2
+
+* Move to mavenCentral
+
 ## 0.2.1
 
 * Fix use of FGBGNotifier and event stream in multiple places
