@@ -13,8 +13,24 @@ class FGBGEvents {
   static Stream<FGBGType>? _stream;
 
   static Stream<FGBGType> get stream {
-      return _stream ??= _channel.receiveBroadcastStream().map((event) =>
-          event == "foreground" ? FGBGType.foreground : FGBGType.background);
+    return _stream ??= _channel
+        .receiveBroadcastStream()
+        .where((_) => !_ignoreEvent)
+        .map((e) =>
+            e == "foreground" ? FGBGType.foreground : FGBGType.background);
+  }
+
+  static bool _ignoreEvent = false;
+  static void ignoreWhile(dynamic Function() closure) async {
+    _ignoreEvent = true;
+    try {
+      final result = closure();
+      if (result is Future) await result;
+    } catch (e) {
+      _ignoreEvent = false;
+      rethrow;
+    }
+    _ignoreEvent = false;
   }
 }
 

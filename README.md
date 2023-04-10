@@ -45,3 +45,16 @@ subscription = FGBGEvents.stream.listen((event) {
 // in dispose
 subscription.cancel();
 ```
+
+## Caveats
+
+In newer Android versions and `image_picker` library, picking an image will open a different app this will make Flutter app switch to background/foreground and `flutter_fgbg` will report this. At the moment there is no solution to this since the API is working as intented. Tracking the issue [here](https://github.com/ajinasokan/flutter_fgbg/issues/5).
+
+As a work around you can use `FGBGEvents.ignoreWhile` API like this:
+
+```dart
+FGBGEvents.ignoreWhile(() async {
+    await picker.pickImage(source: ImageSource.gallery);
+    // or do something else that can put app to background but don't want to be handled by flutter_fgbg
+});
+```
