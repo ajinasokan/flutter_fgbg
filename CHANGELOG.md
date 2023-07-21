@@ -1,3 +1,8 @@
+## 0.3.0
+
+* Gradle 8 compatibility. Thanks @Rexios80
+* New `FGBGEvents.ignoreWhile` API
+
 ## 0.2.2
 
 * Move to mavenCentral
