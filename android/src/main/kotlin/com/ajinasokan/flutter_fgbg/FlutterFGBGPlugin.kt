@@ -21,8 +21,8 @@ class FlutterFGBGPlugin: FlutterPlugin, ActivityAware, LifecycleObserver,
   private var lifecycleSink: EventSink? = null
   private var _currentValue: String? = null
 
-  override fun onListen(o: Any, eventSink: EventSink) {
-    lifecycleSink = eventSink
+  override fun onListen(arguments: Any?, events: EventSink?) {
+    lifecycleSink = events
   }
 
   override fun onCancel(o: Any) {
