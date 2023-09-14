@@ -9,7 +9,7 @@ public class SwiftFlutterFGBGPlugin: NSObject, FlutterPlugin, FlutterStreamHandl
         let instance = SwiftFlutterFGBGPlugin()
         
         let lifeCycleChannel = "com.ajinasokan.flutter_fgbg/events"
-        let methodChannelName = "com.ajinasokan.flutter_fgbg/channel"
+        let methodChannelName = "com.ajinasokan.flutter_fgbg/method"
         
         let lifecycleEventChannel = FlutterEventChannel(name: lifeCycleChannel, binaryMessenger: registrar.messenger())
         
@@ -22,7 +22,7 @@ public class SwiftFlutterFGBGPlugin: NSObject, FlutterPlugin, FlutterStreamHandl
         )
         methodChannel.setMethodCallHandler({
             (call: FlutterMethodCall, result: @escaping FlutterResult) -> Void in
-                
+            
             if(call.method == "current") {
                 let state = UIApplication.shared.applicationState;
                 

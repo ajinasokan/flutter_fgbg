@@ -45,6 +45,13 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
                 children: <Widget>[
                   ElevatedButton(
                     onPressed: () async {
+                      final current = await FGBGEvents.current;
+                      print("Current: $current");
+                    },
+                    child: Text("Current status"),
+                  ),
+                  ElevatedButton(
+                    onPressed: () async {
                       final currenrt = await FGBGEvents.current;
                       print("Current: $currenrt");
                     },
