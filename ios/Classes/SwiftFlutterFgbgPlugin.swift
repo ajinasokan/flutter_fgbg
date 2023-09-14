@@ -25,8 +25,8 @@ public class SwiftFlutterFGBGPlugin: NSObject, FlutterPlugin, FlutterStreamHandl
             
             if(call.method == "current") {
                 let state = UIApplication.shared.applicationState;
-                
-                let resultString = (state == .active) ? "foreground" : "background"
+                // inactive -> https://developer.apple.com/documentation/uikit/uiapplication/state
+                let resultString = (state == .active || state == .inactive) ? "foreground" : "background"
                 result(resultString)
             } else {
                 result(FlutterMethodNotImplemented)

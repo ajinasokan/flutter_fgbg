@@ -19,7 +19,7 @@ class FlutterFGBGPlugin : FlutterPlugin, ActivityAware, LifecycleObserver,
     EventChannel.StreamHandler, MethodChannel.MethodCallHandler {
 
     private var lifecycleSink: EventSink? = null
-    private var _currentValue: String? = null
+    private var _inForeground = true
 
     override fun onListen(arguments: Any?, events: EventSink?) {
         lifecycleSink = events
@@ -45,16 +45,14 @@ class FlutterFGBGPlugin : FlutterPlugin, ActivityAware, LifecycleObserver,
 
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
     fun onAppBackgrounded() {
-        val value = "background"
-        _currentValue = value
-        lifecycleSink?.success(value)
+        _inForeground = false
+        lifecycleSink?.success("background")
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     fun onAppForegrounded() {
-        val value = "foreground"
-        _currentValue = value
-        lifecycleSink?.success(value)
+        _inForeground = true
+        lifecycleSink?.success("foreground")
     }
 
     override fun onDetachedFromActivityForConfigChanges() {}
@@ -67,7 +65,7 @@ class FlutterFGBGPlugin : FlutterPlugin, ActivityAware, LifecycleObserver,
 
     override fun onMethodCall(call: MethodCall, result: MethodChannel.Result) {
         if ((call.method == "current")) {
-            result.success(_currentValue)
+            result.success(if (_inForeground) "foreground" else "background")
         } else {
             result.notImplemented()
         }
