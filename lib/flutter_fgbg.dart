@@ -10,7 +10,15 @@ enum FGBGType {
 
 class FGBGEvents {
   static const _channel = EventChannel("com.ajinasokan.flutter_fgbg/events");
+  static const _methodChannel =
+      MethodChannel("com.ajinasokan.flutter_fgbg/method");
   static Stream<FGBGType>? _stream;
+
+  static Future<FGBGType> get current async {
+    final result = await _methodChannel.invokeMethod("current");
+
+    return result == "foreground" ? FGBGType.foreground : FGBGType.background;
+  }
 
   static Stream<FGBGType> get stream {
     return _stream ??= _channel
@@ -21,6 +29,7 @@ class FGBGEvents {
   }
 
   static bool _ignoreEvent = false;
+
   static void ignoreWhile(dynamic Function() closure) async {
     _ignoreEvent = true;
     try {
