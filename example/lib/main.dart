@@ -52,8 +52,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
                   ),
                   ElevatedButton(
                     onPressed: () async {
-                      final currenrt = await FGBGEvents.current;
-                      print("Current: $currenrt");
+                      events.clear();
+                      setState(() {});
                     },
                     child: Text("Clear logs"),
                   ),
