@@ -30,7 +30,6 @@ android {
     lintOptions {
         disable 'InvalidPackage'
     }
-    namespace "com.ajinasokan.flutter_fgbg"
 }
 
 dependencies {

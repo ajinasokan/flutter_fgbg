@@ -44,9 +44,9 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   ElevatedButton(
-                    onPressed: () {
-                      events.clear();
-                      setState(() {});
+                    onPressed: () async {
+                      final currenrt = await FGBGEvents.current;
+                      print("Current: $currenrt");
                     },
                     child: Text("Clear logs"),
                   ),
