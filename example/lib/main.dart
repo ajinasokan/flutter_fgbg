@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_fgbg/flutter_fgbg.dart';
-import 'package:local_auth/local_auth.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:local_auth/local_auth.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatefulWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   @override
   _MyAppState createState() => _MyAppState();
 }
@@ -17,6 +19,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   List<String> events = [];
 
+  @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     events.add(state.toString());
     setState(() {});
@@ -48,7 +51,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
                       events.clear();
                       setState(() {});
                     },
-                    child: Text("Clear logs"),
+                    child: const Text("Clear logs"),
                   ),
                   ElevatedButton(
                     onPressed: () async {
@@ -56,7 +59,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
                       setState(() {});
                       await picker.pickImage(source: ImageSource.camera);
                     },
-                    child: Text("Take Image"),
+                    child: const Text("Take Image"),
                   ),
                   ElevatedButton(
                     onPressed: () async {
@@ -64,7 +67,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
                       setState(() {});
                       await picker.pickImage(source: ImageSource.gallery);
                     },
-                    child: Text("Pick Image"),
+                    child: const Text("Pick Image"),
                   ),
                   ElevatedButton(
                     onPressed: () async {
@@ -75,7 +78,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
                         await picker.pickImage(source: ImageSource.camera);
                       });
                     },
-                    child: Text("Take Image ignoreWhile"),
+                    child: const Text("Take Image ignoreWhile"),
                   ),
                   ElevatedButton(
                     onPressed: () async {
@@ -87,7 +90,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
                         await picker.pickImage(source: ImageSource.gallery);
                       });
                     },
-                    child: Text("Pick Image ignoreWhile"),
+                    child: const Text("Pick Image ignoreWhile"),
                   ),
                   ElevatedButton(
                     onPressed: () async {
@@ -97,15 +100,15 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
                       await auth.authenticate(
                         // biometricOnly: true,
-                        options: AuthenticationOptions(
+                        options: const AuthenticationOptions(
                           biometricOnly: true,
                         ),
                         localizedReason: 'Test',
                       );
                     },
-                    child: Text("FaceID"),
+                    child: const Text("FaceID"),
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   Expanded(
                     child: ListView(
                       children: [for (var e in events) Text(e)],
