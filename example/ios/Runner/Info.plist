@@ -49,5 +49,9 @@
 	<string>Just testing</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Just testing</string>
+	<key>CADisableMinimumFrameDurationOnPhone</key>
+	<true/>
+	<key>UIApplicationSupportsIndirectInputEvents</key>
+	<true/>
 </dict>
 </plist>
