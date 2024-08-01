@@ -18,6 +18,8 @@ Add to your pubpsec:
 flutter pub add flutter_fgbg
 ```
 
+Do a clean build to integrate the plugin native code to app. Otherwise you might encounter `MissingPluginException`.
+
 Use the built in Widget:
 
 ```dart
