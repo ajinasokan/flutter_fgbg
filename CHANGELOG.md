@@ -1,3 +1,7 @@
+## 0.4.0
+
+* Desktop and Web fallbacks to `AppLifecycleListener` API. Thanks to #17 by @csells.
+
 ## 0.3.0
 
 * Gradle 8 compatibility. Thanks @Rexios80
