@@ -63,7 +63,6 @@ class _FGBGNotifierState extends State<FGBGNotifier> {
     // NOTE: short-circuit the platform check on web to avoid a crash
     if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
       // use mobile-specific implementations
-      print('subscribing:');
       subscription = FGBGEvents.instance.stream.listen((event) {
         widget.onEvent.call(event);
       });
@@ -73,7 +72,6 @@ class _FGBGNotifierState extends State<FGBGNotifier> {
         onStateChange: (state) {
           // check if we're ignoring events right now
           if (FGBGEvents._ignoreEvent) {
-            print('ignoring events');
             return;
           }
 
