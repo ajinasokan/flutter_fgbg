@@ -1,3 +1,7 @@
+## 0.5.0
+
+* Attempt to update the list of supported platforms on pub.dev, since now all supported Flutter platforms are supported by the plugin.
+
 ## 0.4.0
 
 * Desktop and Web fallbacks to `AppLifecycleListener` API. Thanks to #17 by @csells.
