@@ -40,7 +40,7 @@ StreamSubscription<FGBGType> subscription;
 
 ...
 // in initState
-subscription = FGBGEvents.stream.listen((event) {
+subscription = FGBGEvents.instance.stream.listen((event) {
     print(event); // FGBGType.foreground or FGBGType.background
 });
 
