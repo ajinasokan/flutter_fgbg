@@ -1,3 +1,7 @@
+## 0.6.0
+
+* Updated compileSdkVersion to 34 to fix AAPT errors
+
 ## 0.5.0
 
 * Attempt to update the list of supported platforms on pub.dev, since now all supported Flutter platforms are supported by the plugin.
