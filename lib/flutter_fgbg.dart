@@ -28,7 +28,7 @@ class FGBGEvents {
   static FGBGEvents get instance => _instance ??= FGBGEvents._();
 
   static bool _ignoreEvent = false;
-  static void ignoreWhile(dynamic Function() closure) async {
+  static Future<void> ignoreWhile(dynamic Function() closure) async {
     _ignoreEvent = true;
     try {
       final result = closure();
