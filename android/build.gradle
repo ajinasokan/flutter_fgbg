@@ -8,7 +8,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.1.2'
+        classpath 'com.android.tools.build:gradle:7.4.2'
     }
 }
 
@@ -22,12 +22,12 @@ rootProject.allprojects {
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 34
+    compileSdk 34
 
     defaultConfig {
         minSdkVersion 16
     }
-    lintOptions {
+    lint {
         disable 'InvalidPackage'
     }
     namespace "com.ajinasokan.flutter_fgbg"

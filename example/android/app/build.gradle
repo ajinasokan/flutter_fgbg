@@ -26,7 +26,7 @@ apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
-    compileSdkVersion flutter.compileSdkVersion
+    compileSdk flutter.compileSdkVersion
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -41,7 +41,6 @@ android {
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
-
     buildTypes {
         release {
             // TODO: Add your own signing config for the release build.
@@ -49,6 +48,7 @@ android {
             signingConfig signingConfigs.debug
         }
     }
+    namespace 'com.ajinasokan.example'
 }
 
 flutter {
