@@ -34,5 +34,5 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.lifecycle:lifecycle-process:2.2.0'
+    implementation 'androidx.lifecycle:lifecycle-process:2.8.7'
 }

@@ -3,8 +3,8 @@ package com.ajinasokan.flutter_fgbg;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.Lifecycle;
-import androidx.lifecycle.LifecycleObserver;
-import androidx.lifecycle.OnLifecycleEvent;
+import androidx.lifecycle.LifecycleEventObserver;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ProcessLifecycleOwner;
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
@@ -13,7 +13,7 @@ import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding;
 import io.flutter.plugin.common.EventChannel;
 
 /** FlutterFGBGPlugin */
-public class FlutterFGBGPlugin implements FlutterPlugin, ActivityAware, LifecycleObserver, EventChannel.StreamHandler {
+public class FlutterFGBGPlugin implements FlutterPlugin, ActivityAware, LifecycleEventObserver, EventChannel.StreamHandler {
   EventChannel.EventSink lifecycleSink;
 
   @Override
@@ -40,17 +40,14 @@ public class FlutterFGBGPlugin implements FlutterPlugin, ActivityAware, Lifecycl
     ProcessLifecycleOwner.get().getLifecycle().addObserver(this);
   }
 
-  @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
-  void onAppBackgrounded() {
+  @Override
+  public void onStateChanged(@NonNull LifecycleOwner lifecycleOwner, @NonNull Lifecycle.Event event) {
     if (lifecycleSink != null) {
-      lifecycleSink.success("background");
-    }
-  }
-
-  @OnLifecycleEvent(Lifecycle.Event.ON_START)
-  void onAppForegrounded() {
-    if (lifecycleSink != null) {
-      lifecycleSink.success("foreground");
+      if(event == Lifecycle.Event.ON_START) {
+        lifecycleSink.success("foreground");
+      } else if (event == Lifecycle.Event.ON_STOP) {
+        lifecycleSink.success("background");
+      }
     }
   }
 
