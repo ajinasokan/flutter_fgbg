@@ -13,19 +13,50 @@ enum FGBGType {
 class FGBGEvents {
   FGBGEvents._() {}
 
-  final _channel = EventChannel("com.ajinasokan.flutter_fgbg/events");
-  Stream<FGBGType>? _stream;
+  final _nativeEvents = EventChannel("com.ajinasokan.flutter_fgbg/events");
+  final _lifeCycleEvents = StreamController<FGBGType>.broadcast();
+  // ignore: unused_field
+  late final AppLifecycleListener _listener;
 
+  Stream<FGBGType>? _stream;
   Stream<FGBGType> get stream {
-    return _stream ??= _channel
-        .receiveBroadcastStream()
-        .where((_) => !_ignoreEvent)
-        .map((e) =>
-            e == "foreground" ? FGBGType.foreground : FGBGType.background);
+    if (_stream == null) {
+      if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
+        // don't send events if `ignoreWhile` is active
+        _stream = _nativeEvents
+            .receiveBroadcastStream()
+            .map((e) =>
+                e == "foreground" ? FGBGType.foreground : FGBGType.background)
+            .where((e) {
+          final broadcast = !_ignoreEvent && _last != e;
+          _last = e;
+          return broadcast;
+        });
+      } else {
+        // not disposing this. class is singleton, so only one instance
+        // throughout the life of the app, and no handle to dispose.
+        // stream is broadcast so events that are not consumed will be discarded.
+        // overhead is minimal.
+        _listener = AppLifecycleListener(
+          onHide: () => _lifeCycleEvents.add(FGBGType.background),
+          onShow: () => _lifeCycleEvents.add(FGBGType.foreground),
+        );
+        // don't send events if `ignoreWhile` is active
+        _stream = _lifeCycleEvents.stream.where((e) {
+          final broadcast = !_ignoreEvent && _last != e;
+          _last = e;
+          return broadcast;
+        });
+      }
+    }
+    return _stream!;
   }
 
   static FGBGEvents? _instance;
   static FGBGEvents get instance => _instance ??= FGBGEvents._();
+
+  static FGBGType _last = FGBGType.foreground;
+  static FGBGType get last => _last;
 
   static bool _ignoreEvent = false;
   static Future<void> ignoreWhile(dynamic Function() closure) async {
@@ -54,45 +85,19 @@ class FGBGNotifier extends StatefulWidget {
 
 class _FGBGNotifierState extends State<FGBGNotifier> {
   StreamSubscription? subscription;
-  AppLifecycleListener? listener;
 
   @override
   void initState() {
     super.initState();
 
-    // NOTE: short-circuit the platform check on web to avoid a crash
-    if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
-      // use mobile-specific implementations
-      subscription = FGBGEvents.instance.stream.listen((event) {
-        widget.onEvent.call(event);
-      });
-    } else {
-      // use Flutter's default implementation
-      listener = AppLifecycleListener(
-        onStateChange: (state) {
-          // check if we're ignoring events right now
-          if (FGBGEvents._ignoreEvent) {
-            return;
-          }
-
-          // map AppLifecycleState.state to FGBGType events
-          switch (state) {
-            case AppLifecycleState.resumed:
-              widget.onEvent.call(FGBGType.foreground);
-              break;
-            default:
-              widget.onEvent.call(FGBGType.background);
-              break;
-          }
-        },
-      );
-    }
+    subscription = FGBGEvents.instance.stream.listen((event) {
+      widget.onEvent.call(event);
+    });
   }
 
   @override
   void dispose() {
     subscription?.cancel();
-    listener?.dispose();
     super.dispose();
   }
 
