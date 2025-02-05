@@ -1,3 +1,10 @@
+## 0.7.0
+
+* `FGBGEvents.stream` will contain events based on the `AppLifecycleListener` for Desktop and Web fallbacks. Earlier this was available only for the `FGBGNotifier` widget.
+* `FGBGEvents.last` will return the last event captured
+* `FGBGNotifier` will not send the event again if it is same as the last event
+* Fixes `androidx.lifecycle` deprecations
+
 ## 0.6.0
 
 * Updated compileSdkVersion to 34 to fix AAPT errors
