@@ -13,43 +13,46 @@ enum FGBGType {
 class FGBGEvents {
   FGBGEvents._() {}
 
-  final _nativeEvents = EventChannel("com.ajinasokan.flutter_fgbg/events");
-  final _lifeCycleEvents = StreamController<FGBGType>.broadcast();
+  final _eventChannel = EventChannel("com.ajinasokan.flutter_fgbg/events");
+
   // ignore: unused_field
   late final AppLifecycleListener _listener;
 
-  Stream<FGBGType>? _stream;
+  StreamController<FGBGType>? _controller;
   Stream<FGBGType> get stream {
-    if (_stream == null) {
+    if (_controller == null) {
+      _controller = StreamController<FGBGType>.broadcast();
+
       if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
-        // don't send events if `ignoreWhile` is active
-        _stream = _nativeEvents
+        _eventChannel
             .receiveBroadcastStream()
             .map((e) =>
                 e == "foreground" ? FGBGType.foreground : FGBGType.background)
-            .where((e) {
-          final broadcast = !_ignoreEvent && _last != e;
-          _last = e;
-          return broadcast;
-        });
+            .listen(_sendEvent);
       } else {
         // not disposing this. class is singleton, so only one instance
         // throughout the life of the app, and no handle to dispose.
         // stream is broadcast so events that are not consumed will be discarded.
         // overhead is minimal.
         _listener = AppLifecycleListener(
-          onHide: () => _lifeCycleEvents.add(FGBGType.background),
-          onShow: () => _lifeCycleEvents.add(FGBGType.foreground),
+          onHide: () {
+            _sendEvent(FGBGType.background);
+          },
+          onShow: () {
+            _sendEvent(FGBGType.foreground);
+          },
         );
-        // don't send events if `ignoreWhile` is active
-        _stream = _lifeCycleEvents.stream.where((e) {
-          final broadcast = !_ignoreEvent && _last != e;
-          _last = e;
-          return broadcast;
-        });
       }
     }
-    return _stream!;
+    return _controller!.stream;
+  }
+
+  void _sendEvent(FGBGType event) {
+    // don't send events if `ignoreWhile` is active
+    // don't send events if last event is same as current one
+    if (!_ignoreEvent && _last != event) _controller!.add(event);
+
+    _last = event;
   }
 
   static FGBGEvents? _instance;
