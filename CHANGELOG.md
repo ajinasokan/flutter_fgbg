@@ -1,3 +1,7 @@
+## 0.7.1
+
+* Fixed event broadcast if there are multiple listeners
+
 ## 0.7.0
 
 * `FGBGEvents.stream` will contain events based on the `AppLifecycleListener` for Desktop and Web fallbacks. Earlier this was available only for the `FGBGNotifier` widget.
