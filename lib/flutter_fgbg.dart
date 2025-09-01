@@ -1,14 +1,10 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
-enum FGBGType {
-  foreground,
-  background,
-}
+enum FGBGType { foreground, background }
 
 class FGBGEvents {
   FGBGEvents._() {}
@@ -23,11 +19,10 @@ class FGBGEvents {
     if (_controller == null) {
       _controller = StreamController<FGBGType>.broadcast();
 
-      if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
+      if (!kIsWeb && (defaultTargetPlatform == TargetPlatform.android || defaultTargetPlatform == TargetPlatform.iOS)) {
         _eventChannel
             .receiveBroadcastStream()
-            .map((e) =>
-                e == "foreground" ? FGBGType.foreground : FGBGType.background)
+            .map((e) => e == "foreground" ? FGBGType.foreground : FGBGType.background)
             .listen(_sendEvent);
       } else {
         // not disposing this. class is singleton, so only one instance
@@ -71,16 +66,18 @@ class FGBGEvents {
       _ignoreEvent = false;
     }
   }
+
+  // Method to reset the singleton instance, useful for testing purposes.
+  static void reset() {
+    _instance = null;
+  }
 }
 
 class FGBGNotifier extends StatefulWidget {
   final Widget child;
   final ValueChanged<FGBGType> onEvent;
 
-  FGBGNotifier({
-    required this.child,
-    required this.onEvent,
-  });
+  FGBGNotifier({required this.child, required this.onEvent});
 
   @override
   _FGBGNotifierState createState() => _FGBGNotifierState();
