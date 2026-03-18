@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_fgbg/flutter_fgbg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:local_auth/local_auth.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 void main() {
   runApp(const MyApp());
@@ -102,8 +103,26 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
                   onPressed: !_webOrMobile
                       ? null
                       : () async {
+                          events.add("// Launching URL");
+                          setState(() {});
+
+                          await launchUrl(
+                            Uri.parse("https://google.com"),
+                            browserConfiguration: BrowserConfiguration(
+                              showTitle: true,
+                            ),
+                          );
+                          print("launched");
+                        },
+                  child: const Text("Launch URL"),
+                ),
+                ElevatedButton(
+                  onPressed: !_webOrMobile
+                      ? null
+                      : () async {
                           events.add(
-                              "// Opening camera but ignoring events during this");
+                            "// Opening camera but ignoring events during this",
+                          );
                           setState(() {});
                           FGBGEvents.ignoreWhile(() async {
                             await picker.pickImage(source: ImageSource.camera);
@@ -116,7 +135,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
                       ? null
                       : () async {
                           events.add(
-                              "// Opening gallery but ignoring events during this");
+                            "// Opening gallery but ignoring events during this",
+                          );
                           setState(() {});
 
                           FGBGEvents.ignoreWhile(() async {
@@ -124,6 +144,27 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
                           });
                         },
                   child: const Text("Pick Image ignoreWhile"),
+                ),
+                ElevatedButton(
+                  onPressed: !_webOrMobile
+                      ? null
+                      : () async {
+                          events.add(
+                            "// Launching URL but ignoring events during this",
+                          );
+                          setState(() {});
+
+                          FGBGEvents.ignoreWhile(() async {
+                            await launchUrl(
+                              Uri.parse("https://google.com"),
+                              browserConfiguration: BrowserConfiguration(
+                                showTitle: true,
+                              ),
+                            );
+                            print("launched");
+                          });
+                        },
+                  child: const Text("Launch URL ignoreWhile"),
                 ),
                 const SizedBox(height: 16),
                 const Text('Mobile only:'),
@@ -148,9 +189,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
                 const SizedBox(height: 16),
                 const Text('Events:'),
                 Expanded(
-                  child: ListView(
-                    children: [for (var e in events) Text(e)],
-                  ),
+                  child: ListView(children: [for (var e in events) Text(e)]),
                 ),
               ],
             ),

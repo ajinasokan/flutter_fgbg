@@ -2,11 +2,11 @@ import UIKit
 import Flutter
 import UserNotifications
 
-public class SwiftFlutterFGBGPlugin: NSObject, FlutterPlugin, FlutterStreamHandler {
+public class FlutterFGBGPlugin: NSObject, FlutterPlugin, FlutterStreamHandler {
  private var eventSink: FlutterEventSink?
     
   public static func register(with registrar: FlutterPluginRegistrar) {
-    let instance = SwiftFlutterFGBGPlugin()
+    let instance = FlutterFGBGPlugin()
     
     let lifeCycleChannel = "com.ajinasokan.flutter_fgbg/events"
     let lifecycleEventChannel = FlutterEventChannel(name: lifeCycleChannel, binaryMessenger: registrar.messenger())

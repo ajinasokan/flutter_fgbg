@@ -4,8 +4,8 @@ version: 0.7.1
 homepage: https://github.com/ajinasokan/flutter_fgbg
 
 environment:
-  sdk: ">=2.12.0 <4.0.0"
-  flutter: ">=1.12.13+hotfix.6"
+  sdk: ^3.8.0
+  flutter: '>=3.3.0'
 
 dependencies:
   flutter:
@@ -14,16 +14,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
-# declare support for all of the following platforms, even though some of them
-# don't require any special setup or native code to work
-platforms:
-  android:
-  ios:
-  linux:
-  macos:
-  web:
-  windows:
+  flutter_lints: ^5.0.0
 
 flutter:
   plugin:
