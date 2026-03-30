@@ -1,3 +1,7 @@
+## 0.8.0
+
+* Swift package manager migration
+
 ## 0.7.1
 
 * Fixed event broadcast if there are multiple listeners
