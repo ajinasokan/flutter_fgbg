@@ -13,11 +13,11 @@ Flutter plugin to detect when app(not Flutter container) goes to background or f
   s.license          = { :file => '../LICENSE' }
   s.author           = { 'Your Company' => 'email@example.com' }
   s.source           = { :path => '.' }
-  s.source_files = 'Classes/**/*'
+  s.source_files = 'flutter_fgbg/Sources/flutter_fgbg/**/*.swift'
+  s.resource_bundles = {'flutter_fgbg_privacy' => ['flutter_fgbg/Sources/flutter_fgbg/PrivacyInfo.xcprivacy']}
   s.dependency 'Flutter'
-  s.platform = :ios, '8.0'
+  s.platform = :ios, '13.0'
 
-  # Flutter.framework does not contain a i386 slice.
   s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES', 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386' }
   s.swift_version = '5.0'
 end
